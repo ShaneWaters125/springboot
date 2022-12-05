@@ -18,9 +18,7 @@ public class Actor {
     @Column(name = "last_name")
     String lastName;
 
-    public Actor(){
-
-    }
+    public Actor(){}
 
     public Actor(String firstName, String lastName){
         this.firstName = firstName;

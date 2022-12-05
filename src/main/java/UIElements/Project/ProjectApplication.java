@@ -24,13 +24,16 @@ public class ProjectApplication {
 	private CountryRepository countryRepository;
 	private FilmRepository filmRepository;
 
+	private FilmActorRepository filmActorRepository;
+
 	public ProjectApplication(ActorRepository actorRepository, AddressRepository addressRepository,
-							  CountryRepository countryRepository, FilmRepository filmRepository){
+							  CountryRepository countryRepository, FilmRepository filmRepository,
+							  FilmActorRepository filmActorRepository){
 		this.actorRepository = actorRepository;
 		this.addressRepository = addressRepository;
 		this.countryRepository = countryRepository;
 		this.filmRepository = filmRepository;
-
+		this.filmActorRepository = filmActorRepository;
 	}
 
 	public static void main(String[] args) {
@@ -100,6 +103,11 @@ public class ProjectApplication {
 	@GetMapping("/actorsmatch")
 	public @ResponseBody Iterable<Object> getFilmWithActor(){
 		return actorRepository.matchFilm();
+	}
+
+	@GetMapping("/actorsfilms")
+	public @ResponseBody Iterable<FilmActor> getFilmActor(){
+		return filmActorRepository.findAll();
 	}
 
 }
