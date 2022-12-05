@@ -26,6 +26,10 @@ public class Film {
     @Column(name="rating")
     String rating;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "language_id", referencedColumnName = "language_id")
+    Language language;
+
     public Film(){}
 
     public int getFilmId() {
@@ -74,5 +78,13 @@ public class Film {
 
     public void setRating(String rating) {
         this.rating = rating;
+    }
+
+    public Language getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(Language language) {
+        this.language = language;
     }
 }

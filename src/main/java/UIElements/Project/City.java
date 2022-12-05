@@ -18,7 +18,6 @@ public class City {
     @Column(name = "city")
     String city;
 
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "country_id", referencedColumnName = "country_id")
     Country country;

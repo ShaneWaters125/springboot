@@ -3,11 +3,6 @@ package UIElements.Project;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.AutoConfigureOrder;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.ResourceAccessException;
 
@@ -26,14 +21,24 @@ public class ProjectApplication {
 
 	private FilmActorRepository filmActorRepository;
 
+	private FilmCategoryRepository filmCategoryRepository;
+
+	private CategoryRepository categoryRepository;
+
+	private LanguageRepository languageRepository;
+
 	public ProjectApplication(ActorRepository actorRepository, AddressRepository addressRepository,
 							  CountryRepository countryRepository, FilmRepository filmRepository,
-							  FilmActorRepository filmActorRepository){
+							  FilmActorRepository filmActorRepository, FilmCategoryRepository filmCategoryRepository,
+							  CategoryRepository categoryRepository, LanguageRepository languageRepository){
 		this.actorRepository = actorRepository;
 		this.addressRepository = addressRepository;
 		this.countryRepository = countryRepository;
 		this.filmRepository = filmRepository;
 		this.filmActorRepository = filmActorRepository;
+		this.filmCategoryRepository = filmCategoryRepository;
+		this.categoryRepository = categoryRepository;
+		this.languageRepository = languageRepository;
 	}
 
 	public static void main(String[] args) {
@@ -90,9 +95,9 @@ public class ProjectApplication {
 		return addressRepository.findAll();
 	}
 
-	@GetMapping("/addresstest")
-	public @ResponseBody Iterable<Object> matchAddressWithCountry(){
-		return countryRepository.addressWithCountry();
+	@GetMapping("/actors/{actorid}/films")
+	public @ResponseBody Iterable<Object> getFilmWithActor(@PathVariable int actorid){
+		return actorRepository.getFilmsWithActor(actorid);
 	}
 
 	@GetMapping("/films")
@@ -100,14 +105,19 @@ public class ProjectApplication {
 		return filmRepository.findAll();
 	}
 
-	@GetMapping("/actorsmatch")
-	public @ResponseBody Iterable<Object> getFilmWithActor(){
-		return actorRepository.matchFilm();
+	@GetMapping("/films/category")
+	public @ResponseBody Iterable<FilmCategory> getFilmCategory(){
+		return filmCategoryRepository.findAll();
 	}
 
-	@GetMapping("/actorsfilms")
-	public @ResponseBody Iterable<FilmActor> getFilmActor(){
-		return filmActorRepository.findAll();
+	@GetMapping("/films/category/{category}")
+	public @ResponseBody Iterable<Object> matchCategoryWithFilms(@PathVariable String category){
+		return filmRepository.matchCategoryWithFilms(category);
+	}
+
+	@GetMapping("/films/{filmid}/actors")
+	public @ResponseBody Iterable<Object> matchFilmWithActors(@PathVariable int filmid){
+		return filmRepository.matchFilmWithActors(filmid);
 	}
 
 }
