@@ -1,5 +1,8 @@
 package UIElements.Project;
 
+import UIElements.Project.ReturnInterfaces.CategoryWithFilmInterface;
+import UIElements.Project.ReturnInterfaces.FilmWithActorInterface;
+import UIElements.Project.ReturnInterfaces.FilmsWithActorInterface;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,7 +99,7 @@ public class ProjectApplication {
 	}
 
 	@GetMapping("/actors/{actorid}/films")
-	public @ResponseBody Iterable<Object> getFilmWithActor(@PathVariable int actorid){
+	public @ResponseBody Iterable<FilmsWithActorInterface> getFilmWithActor(@PathVariable int actorid){
 		return actorRepository.getFilmsWithActor(actorid);
 	}
 
@@ -111,13 +114,55 @@ public class ProjectApplication {
 	}
 
 	@GetMapping("/films/category/{category}")
-	public @ResponseBody Iterable<Object> matchCategoryWithFilms(@PathVariable String category){
+	public @ResponseBody Iterable<CategoryWithFilmInterface> matchCategoryWithFilms(@PathVariable String category){
 		return filmRepository.matchCategoryWithFilms(category);
 	}
 
 	@GetMapping("/films/{filmid}/actors")
-	public @ResponseBody Iterable<Object> matchFilmWithActors(@PathVariable int filmid){
+	public @ResponseBody Iterable<FilmWithActorInterface> matchFilmWithActors(@PathVariable int filmid){
 		return filmRepository.matchFilmWithActors(filmid);
 	}
+
+	@GetMapping("/films/{filmname}")
+	public @ResponseBody Iterable<Film> findFilmWithName(@PathVariable String filmname) {
+		return filmRepository.findFilmWithName(filmname);
+	}
+
+	@GetMapping("/films/description/{filmdesc}")
+	public @ResponseBody Iterable<Film> findFilmWithDescription(@PathVariable String filmdesc) {
+		return filmRepository.findFilmWithDescription(filmdesc);
+	}
+
+	@GetMapping("/actors/name/{actorfirstname}")
+	public @ResponseBody Iterable<Actor> findActorWithName(@PathVariable String actorfirstname){
+		return actorRepository.findActorWithName(actorfirstname, "");
+	}
+
+	@GetMapping("/actors/name/{actorfirstname}/{actorlastname}")
+	public @ResponseBody Iterable<Actor> findActorWithName(@PathVariable String actorfirstname, @PathVariable String actorlastname){
+		return actorRepository.findActorWithName(actorfirstname, actorlastname);
+	}
+
+	@GetMapping("films/length/{filmlength}")
+	public @ResponseBody Iterable<Film> findFilmsWithLessLengthThan(@PathVariable int filmlength){
+		return filmRepository.findFilmsWithLessLengthThan(filmlength);
+	}
+
+	@GetMapping("films/rating/{filmrating}")
+	public @ResponseBody Iterable<Film> findFilmsWithRating(@PathVariable String filmrating){
+		return filmRepository.findFilmsWithRating(filmrating);
+	}
+
+	@PostMapping("/films/{filmid}/add/{actorid}")
+	public FilmActor addActorToFilm(@PathVariable int filmid, @PathVariable int actorid){
+		Film selfilm = filmRepository.findById(filmid).orElseThrow(() -> new ResourceAccessException("Film with ID: " + filmid + " does not exist."));
+		Actor selfactor = actorRepository.findById(actorid).orElseThrow(() -> new ResourceAccessException("Actor with ID: " + actorid + " does not exist."));
+		return filmActorRepository.save(new FilmActor(selfactor, selfilm));
+	}
+
+//	@GetMapping("films/random")
+//	public @ResponseBody Iterable<Film> getRandomFilm(){
+//		return filmRepository.findById();
+//	}
 
 }

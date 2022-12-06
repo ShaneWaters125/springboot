@@ -29,10 +29,6 @@ public class Address {
     @JoinColumn(name = "city_id", referencedColumnName = "city_id")
     City city;
 
-//    @Column(name = "city_id")
-//    int city_id;
-
-
     @Column(name = "postal_code")
     String postalCode;
 

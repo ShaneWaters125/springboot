@@ -80,11 +80,11 @@ public class Film {
         this.rating = rating;
     }
 
-    public Language getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(Language language) {
-        this.language = language;
-    }
+//    public Language getLanguage() {
+//        return language;
+//    }
+//
+//    public void setLanguage(Language language) {
+//        this.language = language;
+//    }
 }

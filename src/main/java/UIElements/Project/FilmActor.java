@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @IdClass(FilmActorId.class)
@@ -21,6 +22,11 @@ public class FilmActor {
     Film filmId;
 
     public FilmActor(){}
+
+    public FilmActor(Actor actor, Film film){
+        this.actorId = actor;
+        this.filmId = film;
+    }
 
     public Actor getActorId() {
         return actorId;
