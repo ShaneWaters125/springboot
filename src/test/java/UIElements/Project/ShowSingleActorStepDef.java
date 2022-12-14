@@ -8,6 +8,9 @@ import org.junit.jupiter.api.Assertions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.client.ResourceAccessException;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 @ScenarioScope
 public class ShowSingleActorStepDef {
 
@@ -16,6 +19,8 @@ public class ShowSingleActorStepDef {
 
     int actorid;
     Actor actor;
+//    Actor actor = mock(Actor.class);
+
 
     @Given("an actor exists with id {int}")
     public void an_actor_exists_with_id(int id){
@@ -35,5 +40,21 @@ public class ShowSingleActorStepDef {
         String testdetails = actor.getFirstName() + " " + actor.getLastName();
         Assertions.assertEquals(correctdetails, testdetails, "Actor details do not match");
     }
+
+//    @Then("the webpage should show the actors {string} and {string}")
+//    public void the_webpage_should_show_the_actors_firstname_and_lastname(String firstname, String lastname){
+//        String correctdetails = firstname + " " + lastname;
+//        String testdetails = "";
+//
+//        Actor testActor = mock(Actor.class);
+//        when(testActor.getFirstName()).thenReturn(firstname);
+//        when(testActor.getLastName()).thenReturn(lastname);
+//
+//        testdetails += testActor.getFirstName() + " ";
+//        testdetails += testActor.getLastName();
+//
+//
+//        Assertions.assertEquals(correctdetails, testdetails, "Actor details do not match");
+//    }
 
 }

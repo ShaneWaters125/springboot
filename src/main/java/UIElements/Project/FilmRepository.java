@@ -14,13 +14,13 @@ public interface FilmRepository extends JpaRepository<Film, Integer> {
             " WHERE category.name = :catname", nativeQuery = true)
     Iterable<CategoryWithFilmInterface> matchCategoryWithFilms(@Param("catname") String catname);
 
-    @Query(value = "SELECT actor.actor_id, actor.first_name FROM film " +
+    @Query(value = "SELECT actor.actor_id, actor.first_name, actor.last_name FROM film " +
             "INNER JOIN film_actor ON film.film_id = film_actor.film_id " +
             "INNER JOIN actor ON film_actor.actor_id = actor.actor_id " +
             "WHERE film.film_id = :filmid", nativeQuery = true)
     Iterable<FilmWithActorInterface> matchFilmWithActors(@Param("filmid") int filmid);
 
-    @Query(value = "SELECT * FROM film WHERE film.title LIKE %:filmname%", nativeQuery = true)
+    @Query(value = "SELECT * FROM film WHERE film.title LIKE :filmname%", nativeQuery = true)
     Iterable<Film> findFilmWithName(@Param("filmname") String filmname);
 
     @Query(value = "SELECT * FROM film WHERE film.description LIKE %:filmdesc%", nativeQuery = true)
@@ -31,7 +31,6 @@ public interface FilmRepository extends JpaRepository<Film, Integer> {
 
     @Query(value = "SELECT * FROM film WHERE film.rating = :filmrating", nativeQuery = true)
     Iterable<Film> findFilmsWithRating(@Param("filmrating") String filmrating);
-
 
 }
 

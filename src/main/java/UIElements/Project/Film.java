@@ -26,9 +26,9 @@ public class Film {
     @Column(name="rating")
     String rating;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "language_id", referencedColumnName = "language_id")
-    Language language;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "language_id", referencedColumnName = "language_id")
+//    Language language;
 
     public Film(){}
 

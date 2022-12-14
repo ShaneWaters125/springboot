@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.ResourceAccessException;
 
+import java.util.List;
+
 @SpringBootApplication
 @RestController
 @RequestMapping("/home")
@@ -59,7 +61,7 @@ public class ProjectApplication {
 				.orElseThrow(() -> new ResourceAccessException("Actor with ID: " + actorID + " does not exist."));
 	}
 
-	@PutMapping("/actors/{actorID}")
+	@PutMapping("/actors/update/{actorID}")
 	public Actor putActorsByID(@RequestBody Actor newActor, @PathVariable int actorID){
 		return actorRepository.findById(actorID)
 				.map(actor -> {
@@ -73,12 +75,12 @@ public class ProjectApplication {
 				});
 	}
 
-	@PostMapping("/actors")
+	@PostMapping("/actors/add")
 	public Actor postActors(@RequestBody Actor newActor){
 		return actorRepository.save(newActor);
 	}
 
-	@DeleteMapping("/actors/{actorID}")
+	@DeleteMapping("/actors/delete/{actorID}")
 	public void deleteActorsByID(@PathVariable int actorID){
 		actorRepository.deleteById(actorID);
 	}
@@ -160,9 +162,16 @@ public class ProjectApplication {
 		return filmActorRepository.save(new FilmActor(selfactor, selfilm));
 	}
 
-//	@GetMapping("films/random")
-//	public @ResponseBody Iterable<Film> getRandomFilm(){
-//		return filmRepository.findById();
-//	}
+	@GetMapping("/films/random")
+	public @ResponseBody Film getRandomFilm(){
+		List<Film> films = filmRepository.findAll();
+		int rand = (int) (Math.random()*films.size()+1);
+		return films.get(rand);
+	}
+
+	@PostMapping("/films/add")
+	public void addFilm(@RequestBody Film newFilm){
+		filmRepository.save(newFilm);
+	}
 
 }

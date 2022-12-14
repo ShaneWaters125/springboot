@@ -12,7 +12,7 @@ public interface ActorRepository extends JpaRepository<Actor, Integer> {
     @Query(value = "SELECT * FROM actor ORDER BY actor_id DESC LIMIT 1", nativeQuery = true)
     Actor findLast();
 
-    @Query(value = "SELECT film.title FROM actor " +
+    @Query(value = "SELECT film.film_id, film.title FROM actor " +
             "INNER JOIN film_actor ON actor.actor_id = film_actor.actor_id " +
             "INNER JOIN film ON film_actor.film_id = film.film_id " +
             "WHERE actor.actor_id = :actorid", nativeQuery = true)

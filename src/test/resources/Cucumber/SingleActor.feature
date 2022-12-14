@@ -9,4 +9,4 @@ Feature: get a specific actor
       | actorid | firstname | lastname |
       | 1       | John      | Doe      |
       | 2       | NICK      | WAHLBERG |
-      | 3       | BORRIS    | JOHNSON  |
+      | 3       | BORIS    | JOHNSON  |
