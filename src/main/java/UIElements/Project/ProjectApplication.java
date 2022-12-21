@@ -9,6 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.ResourceAccessException;
 
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.secretsmanager.SecretsManagerClient;
+import software.amazon.awssdk.services.secretsmanager.model.GetSecretValueRequest;
+import software.amazon.awssdk.services.secretsmanager.model.GetSecretValueResponse;
+
 import java.util.List;
 
 @SpringBootApplication
@@ -32,20 +37,17 @@ public class ProjectApplication {
 
 	private LanguageRepository languageRepository;
 
-	public ProjectApplication(ActorRepository actorRepository, AddressRepository addressRepository,
-							  CountryRepository countryRepository, FilmRepository filmRepository,
-							  FilmActorRepository filmActorRepository, FilmCategoryRepository filmCategoryRepository,
-							  CategoryRepository categoryRepository, LanguageRepository languageRepository){
+	public ProjectApplication(ActorRepository actorRepository, FilmRepository filmRepository,
+							  FilmActorRepository filmActorRepository, FilmCategoryRepository filmCategoryRepository){
 		this.actorRepository = actorRepository;
-		this.addressRepository = addressRepository;
-		this.countryRepository = countryRepository;
+//		this.addressRepository = addressRepository;
+//		this.countryRepository = countryRepository;
 		this.filmRepository = filmRepository;
 		this.filmActorRepository = filmActorRepository;
 		this.filmCategoryRepository = filmCategoryRepository;
-		this.categoryRepository = categoryRepository;
-		this.languageRepository = languageRepository;
+//		this.categoryRepository = categoryRepository;
+//		this.languageRepository = languageRepository;
 	}
-
 	public static void main(String[] args) {
 		SpringApplication.run(ProjectApplication.class, args);
 	}
@@ -110,13 +112,19 @@ public class ProjectApplication {
 		return filmRepository.findAll();
 	}
 
+	@GetMapping("/films/id/{filmID}")
+	public Film getFilmsById (@PathVariable int filmID){
+		return filmRepository.findById(filmID)
+				.orElseThrow(() -> new ResourceAccessException("Film with ID: " + filmID + " does not exist."));
+	}
+
 	@GetMapping("/films/category")
 	public @ResponseBody Iterable<FilmCategory> getFilmCategory(){
 		return filmCategoryRepository.findAll();
 	}
 
 	@GetMapping("/films/category/{category}")
-	public @ResponseBody Iterable<CategoryWithFilmInterface> matchCategoryWithFilms(@PathVariable String category){
+	public @ResponseBody Iterable<Film> matchCategoryWithFilms(@PathVariable String category){
 		return filmRepository.matchCategoryWithFilms(category);
 	}
 
@@ -125,7 +133,7 @@ public class ProjectApplication {
 		return filmRepository.matchFilmWithActors(filmid);
 	}
 
-	@GetMapping("/films/{filmname}")
+	@GetMapping("/films/name/{filmname}")
 	public @ResponseBody Iterable<Film> findFilmWithName(@PathVariable String filmname) {
 		return filmRepository.findFilmWithName(filmname);
 	}

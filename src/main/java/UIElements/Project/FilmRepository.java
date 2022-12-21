@@ -8,11 +8,11 @@ import org.springframework.data.repository.query.Param;
 
 public interface FilmRepository extends JpaRepository<Film, Integer> {
 
-    @Query(value = "SELECT film.title, category.name FROM film " +
+    @Query(value = "SELECT film.film_id, film.title, film.description, film.length, film.rating, film.release_year FROM film " +
             "INNER JOIN film_category ON film.film_id = film_category.film_id " +
             "INNER JOIN category ON film_category.category_id = category.category_id" +
             " WHERE category.name = :catname", nativeQuery = true)
-    Iterable<CategoryWithFilmInterface> matchCategoryWithFilms(@Param("catname") String catname);
+    Iterable<Film> matchCategoryWithFilms(@Param("catname") String catname);
 
     @Query(value = "SELECT actor.actor_id, actor.first_name, actor.last_name FROM film " +
             "INNER JOIN film_actor ON film.film_id = film_actor.film_id " +
